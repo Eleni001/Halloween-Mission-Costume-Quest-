@@ -13,7 +13,7 @@ function renderLocations() {
     const locationContainer = displayUserLocation(location);
 
     // Add user location to the page
-    main.appendChild(locationContainer);
+    main.append(locationContainer);
   }
 }
 
@@ -34,6 +34,11 @@ function displayUserLocation(location) {
     const exitButton = document.createElement("button");
     exitButton.textContent = option;
     exitButton.className = "exit-options";
+
+  // Add advent listner to option buttons
+    exitButton.addEventListener("click", function() {
+      console.log("you chose " + option);
+    });
 
     locationContainer.append(exitButton);
     }
