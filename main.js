@@ -4,6 +4,8 @@ function main() {
   renderLocations();
 }
 
+/* this generates html elements from data file of locations and renders them to the screen*/
+
 function renderLocations() {
   const main = document.querySelector("#location-container");
 
@@ -25,13 +27,17 @@ function displayUserLocation(location) {
   locationDescription.textContent = location.description;
   locationDescription.className = "location-description";
 
-  // Create exit options
-  const exitOptions = document.createElement("p");
-  exitOptions.textContent = location.exitOptions;
-  exitOptions.className = "exit-options";
-
   locationContainer.append(locationDescription);
-  locationContainer.append(exitOptions);
+
+  // Create buttons for exit options 
+  for (const option of location.exitOptions) {
+    const exitButton = document.createElement("button");
+    exitButton.textContent = option;
+    exitButton.className = "exit-options";
+
+    locationContainer.append(exitButton);
+    }
+
 
   return locationContainer;
 }
