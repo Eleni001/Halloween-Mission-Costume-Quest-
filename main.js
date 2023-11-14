@@ -11,8 +11,13 @@ function main() {
 function renderLocations() {
   const main = document.querySelector("#location-container");
 
+  /* Remove the existing location of the user */
+  const existingLocationContainer = document.querySelector(".user-location");
+  if (existingLocationContainer) {
+    main.removeChild(existingLocationContainer);
+  }
+  /* get the new location of the user */
   const locationContainer = displayUserLocation(locations[currentLocation]);
-  // Add user location to the page
   main.append(locationContainer);
 }
 
