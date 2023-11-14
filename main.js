@@ -1,20 +1,19 @@
 window.addEventListener("DOMContentLoaded", main);
 
+let currentLocation = 0;
+
+/** This is the start of the program */
 function main() {
   renderLocations();
 }
 
 /* this generates html elements from data file of locations and renders them to the screen*/
-
 function renderLocations() {
   const main = document.querySelector("#location-container");
 
-  for (const location of locations) {
-    const locationContainer = displayUserLocation(location);
-
-    // Add user location to the page
-    main.append(locationContainer);
-  }
+  const locationContainer = displayUserLocation(locations[currentLocation]);
+  // Add user location to the page
+  main.append(locationContainer);
 }
 
 function displayUserLocation(location) {
@@ -29,20 +28,20 @@ function displayUserLocation(location) {
 
   locationContainer.append(locationDescription);
 
-  // Create buttons for exit options 
+  // Create buttons for exit options
   for (const option of location.exitOptions) {
     const exitButton = document.createElement("button");
-    exitButton.textContent = option;
+    exitButton.textContent = locations[option].name;
     exitButton.className = "exit-options";
 
-  // Add advent listner to option buttons
-    exitButton.addEventListener("click", function() {
+    // Add advent listner to option buttons
+    exitButton.addEventListener("click", function () {
       console.log("you chose " + option);
+      currentLocation = option;
+      renderLocations();
     });
 
     locationContainer.append(exitButton);
-    }
-
-
+  }
   return locationContainer;
 }
