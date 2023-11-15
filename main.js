@@ -5,33 +5,48 @@ let currentLocation = 0;
 /** This is the start of the program */
 function main() {
   renderLocations();
+  renderOutfits();
 }
 
 /* this generates html elements from data file of locations and renders them to the screen*/
 function renderLocations() {
-  const main = document.querySelector("#location-container");
+  const locationContainer = document.querySelector("#location-container");
 
   /* Remove the existing location of the user */
-  const existingLocationContainer = document.querySelector(".user-location");
-  if (existingLocationContainer) {
-    main.removeChild(existingLocationContainer);
+  const existingUserLocation = document.querySelector(".user-location");
+  if (existingUserLocation) {
+    locationContainer.removeChild(existingUserLocation);
   }
   /* get the new location of the user */
-  const locationContainer = displayUserLocation(locations[currentLocation]);
-  main.append(locationContainer);
+  const newUserLocation = displayUserLocation(locations[currentLocation]);
+  locationContainer.append(newUserLocation);
+}
+
+/* this generates html elements from data file of locations and renders them to the screen*/
+function renderOutfits() {
+  const outfitContainer = document.querySelector("#outfit-container");
+
+  /* Remove the existing outfits of the user */
+  const existingOutfits = document.querySelector(".user-outfits");
+  if (existingOutfits) {
+    locationContainer.removeChild(existingOutfits);
+  }
+  /* get  */
+  const newOutfits = displayOutfits(outfits);
+  outfitContainer.append(newOutfits);
 }
 
 function displayUserLocation(location) {
-  // Create location container
-  const locationContainer = document.createElement("div");
-  locationContainer.className = "user-location";
+  // Create location div
+  const userLocationDiv = document.createElement("div");
+  userLocationDiv.className = "user-location";
 
   // Create location description
   const locationDescription = document.createElement("p");
   locationDescription.textContent = location.description;
   locationDescription.className = "location-description";
 
-  locationContainer.append(locationDescription);
+  userLocationDiv.append(locationDescription);
 
   // Create buttons for exit options
   for (const option of location.exitOptions) {
@@ -43,10 +58,39 @@ function displayUserLocation(location) {
     exitButton.addEventListener("click", function () {
       console.log("you chose " + option);
       currentLocation = option;
-      renderLocations();
+      /* renderLocations(); */
+      main();
     });
 
-    locationContainer.append(exitButton);
+    userLocationDiv.append(exitButton);
   }
-  return locationContainer;
+  return userLocationDiv;
+}
+
+function displayOutfits(outfits) {
+  // Create outfit div
+  const outfitDiv = document.createElement("div");
+  outfitDiv.id = "user-outfits";
+
+  // Create outfit header
+  const outfitHeader = document.createElement("h2");
+  outfitHeader.innerHTML = "Choose your Outfit.";
+  outfitHeader.id = "outfit-header";
+
+  outfitDiv.append(outfitHeader);
+
+  // Create outfit title
+  for (const outfit of outfits) {
+    if (currentLocation == Number(outfit.location)) {
+      const outfitTitle = document.createElement("h3");
+      outfitTitle.className = "outfit-title";
+      outfitTitle.textContent = outfit.name;
+      outfitDiv.append(outfitTitle);
+      console.log(outfit.location);
+      console.log(currentLocation);
+    } else {
+      console.log("Sorry! There are no avalible outfits at the moment.");
+    }
+  }
+  return outfitDiv;
 }
