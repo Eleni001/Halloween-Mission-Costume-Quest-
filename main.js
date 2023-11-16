@@ -8,11 +8,14 @@ function main() {
   renderOutfits();
 }
 
-/* this generates html elements from data file of locations and renders them to the screen*/
+/**
+ * this generates the users current location
+  */ 
 function renderLocations() {
+  /* get the container for for location display */
   const locationContainer = document.querySelector("#location-container");
 
-  /* Remove the existing location of the user */
+  /* Remove the previous locations of the user */
   const existingUserLocation = document.querySelector(".user-location");
   if (existingUserLocation) {
     locationContainer.removeChild(existingUserLocation);
@@ -22,16 +25,19 @@ function renderLocations() {
   locationContainer.append(newUserLocation);
 }
 
-/* this generates html elements from data file of locations and renders them to the screen*/
+/**
+ * this generates available outfits based on the user´s current location
+ */
 function renderOutfits() {
   const outfitContainer = document.querySelector("#outfit-container");
 
-  /* Remove the existing outfits of the user */
-  const existingOutfits = document.querySelector(".user-outfits");
+  /* Remove the outfits shown in previous departments */
+  const existingOutfits = document.querySelector("#user-outfits");
   if (existingOutfits) {
-    locationContainer.removeChild(existingOutfits);
+    outfitContainer.removeChild(existingOutfits);
   }
-  /* get  */
+
+  /* get the new outfits */
   const newOutfits = displayOutfits(outfits);
   outfitContainer.append(newOutfits);
 }
@@ -72,24 +78,23 @@ function displayOutfits(outfits) {
   const outfitDiv = document.createElement("div");
   outfitDiv.id = "user-outfits";
 
-  // Create outfit header
-  const outfitHeader = document.createElement("h2");
-  outfitHeader.innerHTML = "Choose your Outfit.";
-  outfitHeader.id = "outfit-header";
+  const outfitsInCurrentDep = outfits.filter(function (outfit) {
+    return currentLocation === outfit.location;
+  });
+  if (outfitsInCurrentDep.length >= 1) {
+    // Create outfit header
+    const outfitHeader = document.createElement("h2");
+    outfitHeader.innerHTML = "Choose your Outfit.";
+    outfitHeader.id = "outfit-header";
 
-  outfitDiv.append(outfitHeader);
+    outfitDiv.append(outfitHeader);
 
-  // Create outfit title
-  for (const outfit of outfits) {
-    if (currentLocation == Number(outfit.location)) {
+    // Create outfit title
+    for (const outfit of outfitsInCurrentDep) {
       const outfitTitle = document.createElement("h3");
       outfitTitle.className = "outfit-title";
       outfitTitle.textContent = outfit.name;
       outfitDiv.append(outfitTitle);
-      console.log(outfit.location);
-      console.log(currentLocation);
-    } else {
-      console.log("Sorry! There are no avalible outfits at the moment.");
     }
   }
   return outfitDiv;
