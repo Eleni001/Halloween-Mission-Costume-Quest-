@@ -2,6 +2,7 @@ window.addEventListener("DOMContentLoaded", main);
 /** Current location index for user
  */
 let currentLocation = 0;
+let outfitPicked = [];
 
 /** This is the start of the program */
 function main() {
@@ -11,7 +12,7 @@ function main() {
 
 /**
  * this generates the users current location
-  */ 
+ */
 function renderLocations() {
   /* get the container for for location display */
   const locationContainer = document.querySelector("#location-container");
@@ -43,7 +44,7 @@ function renderOutfits() {
   outfitContainer.append(newOutfits);
 }
 /**
- * this takes location object and creates all needed html elements and returns it 
+ * this takes location object and creates all needed html elements and returns it
  * @param {UserLocation} location  the location object to turn into html content
  * @returns an html representation of the user´s location
  */
@@ -80,15 +81,15 @@ function displayUserLocation(location) {
 
 /**
  * this takes an array of outfit objects available based on user´s location
- * @param {Outfits[]} outfits array of outfit objects to turn into html content
+ * @param {Outfits[]} outfitsToDisplay array of outfit objects to turn into html content
  * @returns an html representation of availalble outfits
  */
-function displayOutfits(outfits) {
+function displayOutfits(outfitsToDisplay) {
   // Create outfit div
   const outfitDiv = document.createElement("div");
   outfitDiv.id = "user-outfits";
 
-  const outfitsInCurrentDep = outfits.filter(function (outfit) {
+  const outfitsInCurrentDep = outfitsToDisplay.filter(function (outfit) {
     return currentLocation === outfit.location;
   });
   if (outfitsInCurrentDep.length >= 1) {
@@ -101,9 +102,21 @@ function displayOutfits(outfits) {
 
     // Create outfit title
     for (const outfit of outfitsInCurrentDep) {
-      const outfitTitle = document.createElement("h3");
+      const outfitTitle = document.createElement("button");
       outfitTitle.className = "outfit-title";
       outfitTitle.textContent = outfit.name;
+      /* outfitDiv.append(outfitTitle); */
+
+      // Add advent listner to option buttons
+      outfitTitle.addEventListener("click", function () {
+        console.log("you piced up " + outfit.name);
+        outfitPicked.push(outfit);
+        // Delete teh piced out outfit from previous location
+        const indexToDelete = outfits.indexOf(outfit);
+        outfits.splice(indexToDelete, 1);
+        main();
+      });
+
       outfitDiv.append(outfitTitle);
     }
   }
