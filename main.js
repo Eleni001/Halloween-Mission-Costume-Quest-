@@ -6,8 +6,17 @@ let outfitPicked = [];
 
 /** This is the start of the program */
 function main() {
+  loadStateFromLS();
+  renderAll();
+}
+
+/**
+ *
+ */
+function renderAll() {
   renderLocations();
   renderOutfits();
+  renderOutfitPicked();
 }
 
 /**
@@ -43,6 +52,14 @@ function renderOutfits() {
   const newOutfits = displayOutfits(outfits);
   outfitContainer.append(newOutfits);
 }
+function renderOutfitPicked() {
+  const outfitPickedContainer = document.querySelector("#outfit-picked-container");
+
+  /* get picked outfits */
+  const outfitPickedDiv = displayoutfitPicked(outfitPicked);
+  outfitPickedContainer.append(outfitPickedDiv);
+}
+
 /**
  * this takes location object and creates all needed html elements and returns it
  * @param {UserLocation} location  the location object to turn into html content
@@ -70,8 +87,9 @@ function displayUserLocation(location) {
     exitButton.addEventListener("click", function () {
       console.log("you chose " + option);
       currentLocation = option;
-      /* renderLocations(); */
-      main();
+      const currentLocationString = JSON.stringify(currentLocation);
+      localStorage.setItem("currentLocation", currentLocationString);
+      renderAll();
     });
 
     userLocationDiv.append(exitButton);
@@ -105,7 +123,6 @@ function displayOutfits(outfitsToDisplay) {
       const outfitTitle = document.createElement("button");
       outfitTitle.className = "outfit-title";
       outfitTitle.textContent = outfit.name;
-      /* outfitDiv.append(outfitTitle); */
 
       // Add advent listner to option buttons
       outfitTitle.addEventListener("click", function () {
@@ -114,6 +131,8 @@ function displayOutfits(outfitsToDisplay) {
         // Delete teh piced out outfit from previous location
         const indexToDelete = outfits.indexOf(outfit);
         outfits.splice(indexToDelete, 1);
+        const outfitPickedString = JSON.stringify(outfitPicked);
+        localStorage.setItem("outfitPicked", outfitPickedString);
         main();
       });
 
@@ -121,4 +140,43 @@ function displayOutfits(outfitsToDisplay) {
     }
   }
   return outfitDiv;
+}
+
+function displayoutfitPicked(outfitsToDisplay) {
+  // Create outfit div
+  const outfitPickedDiv = document.createElement("div");
+  outfitPickedDiv.id = "user-pickedoutfits";
+
+  if (outfitsToDisplay.length >= 1) {
+    // Create outfit header
+    const outfitHeader = document.createElement("h2");
+    outfitHeader.innerHTML = "You have picked these outfits";
+    outfitHeader.id = "picked-outfit-header";
+
+    outfitPickedDiv.append(outfitHeader);
+
+    // Create outfit title
+    for (const outfit of outfitsToDisplay) {
+      const outfitTitle = document.createElement("h3");
+      outfitTitle.className = "outfit-title";
+      outfitTitle.textContent = outfit.name;
+      outfitPickedDiv.append(outfitTitle);
+    }
+  }
+  return outfitPickedDiv;
+}
+
+/**
+ * Loads the cart from local storage and
+ * saves it to the global cart array.
+ */
+function loadStateFromLS() {
+  if (localStorage.key("currentLocation")) {
+    const currentLocationString = localStorage.getItem("currentLocation");
+    currentLocation = JSON.parse(currentLocationString);
+  }
+  if (localStorage.key("outfitPicked")) {
+    const outfitPickedString = localStorage.getItem("outfitPicked");
+    outfitPicked = JSON.parse(outfitPickedString);
+  }
 }

@@ -10,7 +10,7 @@ body {
     padding: 0 1rem;
   }
   
-  main {
+  div {
     display: flex;
     flex-direction: column;
     gap: 1rem;
