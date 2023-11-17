@@ -1,5 +1,6 @@
 window.addEventListener("DOMContentLoaded", main);
-
+/** Current location index for user
+ */
 let currentLocation = 0;
 
 /** This is the start of the program */
@@ -41,7 +42,11 @@ function renderOutfits() {
   const newOutfits = displayOutfits(outfits);
   outfitContainer.append(newOutfits);
 }
-
+/**
+ * this takes location object and creates all needed html elements and returns it 
+ * @param {UserLocation} location  the location object to turn into html content
+ * @returns an html representation of the user´s location
+ */
 function displayUserLocation(location) {
   // Create location div
   const userLocationDiv = document.createElement("div");
@@ -73,6 +78,11 @@ function displayUserLocation(location) {
   return userLocationDiv;
 }
 
+/**
+ * this takes an array of outfit objects available based on user´s location
+ * @param {Outfits[]} outfits array of outfit objects to turn into html content
+ * @returns an html representation of availalble outfits
+ */
 function displayOutfits(outfits) {
   // Create outfit div
   const outfitDiv = document.createElement("div");

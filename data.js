@@ -1,3 +1,11 @@
+/**
+ * @typedef {{ name: string, description: string, exitOptions: number[] }} UserLocation
+ */
+
+/**
+ * a list of locations used for the user to navigate between
+ * @type {UserLocation[]}
+ */
 const locations = [
   {
     name: "Outside The Store",
@@ -43,6 +51,14 @@ const locations = [
   },
 ];
 
+/**
+ * @typedef {{ name: string, description: number, exitOptions: number[] }} Outfits
+ */
+
+/**
+ * a list of outfits used to display in various rooms
+ * @type {Outfits[]}
+ */
 let outfits = [
   {
     name: "a",
